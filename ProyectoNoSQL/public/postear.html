@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Postear</title>
+    <link href="css/estilo.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header" style="background-color: #ececec;">
+        <!-- Aquí va tu encabezado -->
+    </header>
+
+    <main>
+        <!-- Dentro del div "create-post" en tu HTML -->
+        <form action="/api/publicaciones" method="post" enctype="multipart/form-data">
+            <input type="text" name="nombreUsuario" placeholder="Nombre de usuario">
+            <textarea name="descripcion" placeholder="Descripción"></textarea>
+            <input type="file" name="imagen">
+            <button type="submit">Publicar</button>
+        </form>
+        
+        </section>
+    </main>
+
+    <footer class="footer" style="background-color: #ececec;">
+        <!-- Aquí va tu pie de página -->
+    </footer>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+
+
+        // Manejar el envío del formulario de creación de publicaciones
+        const crearPublicacionForm = document.getElementById('crearPublicacionForm');
+
+// Manejar el envío del formulario de creación de publicaciones
+crearPublicacionForm.addEventListener('submit', async function(event) {
+    // Verificar si se seleccionó una imagen
+    const imagenInput = document.querySelector('input[name="imagen"]');
+    if (!imagenInput.files[0]) {
+        alert('Por favor, selecciona una imagen.');
+        return;
+    }
+
+    // Continuar con el envío del formulario si se seleccionó una imagen
+    const formData = new FormData(crearPublicacionForm);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(imagenFile);
+
+            reader.onload = function () {
+                const imagenBase64 = reader.result;
+                formData.set('imagen', imagenBase64); // Reemplazar la imagen con su representación en Base64
+
+                // Enviar los datos del formulario al servidor
+                fetch('/api/publicaciones', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Publicación creada exitosamente');
+                        // Recargar la página para reflejar los cambios
+                        location.reload();
+                    } else {
+                        console.error('Error al crear la publicación:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al crear la publicación:', error);
+                });
+            };
+        });
+    });
+</script>
+
+
+
+</html>
